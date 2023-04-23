@@ -42,7 +42,7 @@ class SignInAct : ComponentActivity() {
             reload()
         } else {
             setContent {
-                RegistrationScreen()
+                LoginScreen()
             }
         }
     }
@@ -57,7 +57,9 @@ class SignInAct : ComponentActivity() {
     private fun registerUser(email: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this) { task ->
             if (task.isSuccessful) {
-                // Реєстрація успішна. Тут можна виконати необхідні дії після реєстрації
+                setContent{
+                    SuccessDialog()
+                }
             } else {
                 setContent{
                     ErrorDialog()
@@ -186,6 +188,47 @@ class SignInAct : ComponentActivity() {
             }
         )
     }
+    @Composable
+    fun SuccessDialog() {
+        AlertDialog(
+            onDismissRequest = { /* пусто */ },
+            title = { Text("Реєстрація успішна") },
+            text = { Text("Ви успішно зареєструвались") },
+            confirmButton = {
+                TextButton(onClick = { /* закрити вікно */ }) {
+                    Text("Закрити")
+                }
+            }
+        )
+    }
+    @Composable
+    fun LoginScreen() {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Button(
+                onClick = { 
+                          setContent{
+                              RegistrationScreen()
+                          }
+                },
+                modifier = Modifier.padding(bottom = 16.dp)
+            ) {
+                Text("Реєстрація")
+            }
+            Button(
+                onClick = { setContent{
+                    EmailAuthScreen(onLoginClicked = )
+                }
+                }
+            ) {
+                Text("Вхід")
+            }
+        }
+    }
+
 
 
 }
